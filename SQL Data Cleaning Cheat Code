@@ -1,0 +1,58 @@
+-- Example: Counting missing values in a table
+SELECT COUNT(*) AS missing_count
+FROM your_table
+WHERE your_column IS NULL;
+
+
+-- Example: Removing rows with missing values
+DELETE FROM your_table
+WHERE your_column IS NULL;
+
+
+-- Example: Imputing missing values with the mean
+UPDATE your_table
+SET your_column = (SELECT AVG(your_column) FROM your_table WHERE your_column IS NOT NULL)
+WHERE your_column IS NULL;
+
+
+-- Example: Counting duplicate rows
+SELECT your_column, COUNT(*)
+FROM your_table
+GROUP BY your_column
+HAVING COUNT(*) > 1;
+
+
+-- Example: Removing duplicate rows
+WITH DuplicateCTE AS (
+  SELECT your_column, ROW_NUMBER() OVER (PARTITION BY your_column ORDER BY your_column) AS row_num
+  FROM your_table
+)
+DELETE FROM DuplicateCTE
+WHERE row_num > 1;
+
+
+-- Example: Converting column values to uppercase
+UPDATE your_table
+SET your_column = UPPER(your_column);
+
+
+-- Example: Removing leading and trailing whitespaces
+UPDATE your_table
+SET your_column = TRIM(your_column);
+
+
+-- Example: Converting a string column to an integer
+ALTER TABLE your_table
+ALTER COLUMN your_column TYPE INTEGER
+USING your_column::INTEGER;
+
+
+-- Example: Converting a string date column to a date type
+ALTER TABLE your_table
+ALTER COLUMN your_date_column TYPE DATE
+USING TO_DATE(your_date_column, 'YYYY-MM-DD');
+
+
+
+
+
